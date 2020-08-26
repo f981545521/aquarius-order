@@ -4,6 +4,10 @@ import cn.acyou.aquarius.order.client.ProductClient;
 import cn.acyou.aquarius.order.common.Result;
 import cn.acyou.aquarius.order.entity.Order;
 import cn.acyou.aquarius.order.mapper.OrderMapper;
+import io.seata.core.context.RootContext;
+import io.seata.spring.annotation.GlobalTransactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +28,7 @@ import java.util.Random;
 @RestController
 @RequestMapping("test")
 public class OrderController {
+    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
     @Autowired
     private OrderMapper orderMapper;
     @Autowired
@@ -48,8 +53,9 @@ public class OrderController {
     }
 
     @GetMapping(value = "/testOpenFeign")
-    @Transactional
+    @GlobalTransactional(rollbackFor = Exception.class)
     public Result<?> testOpenFeign(String key) {
+        log.info("ORDER XID is: {}", RootContext.getXID());
         List<String> strings = productClient.outStock();
         System.out.println(strings);
         Order order = new Order();
