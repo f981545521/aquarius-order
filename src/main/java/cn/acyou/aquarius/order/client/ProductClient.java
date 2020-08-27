@@ -16,4 +16,7 @@ public interface ProductClient {
     @RequestMapping(method = RequestMethod.GET, value = "/test/outStock")
     List<String> outStock();
 
+    @RequestMapping(method = RequestMethod.GET, value = "/test/inStock")
+    List<String> inStock();
+
 }

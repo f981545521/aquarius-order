@@ -5,11 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * TODO: 不生效还要检查
+ *
  * @author youfang
  * @version [1.0.0, 2020/8/27]
  **/
@@ -19,12 +16,17 @@ public class ProductClientFallback implements FallbackFactory<ProductClient> {
 
     @Override
     public ProductClient create(Throwable throwable) {
-        return new ProductClient() {
+        log.info("访问失败，{}", throwable.getMessage());
+        throw new RuntimeException("接口调用失败，请检查服务状态!");
+/*        return new ProductClient() {
             @Override
             public List<String> outStock() {
-                log.info("访问失败");
-                return new ArrayList<>();
+                throw new RuntimeException("接口调用失败，请检查服务状态!");
             }
-        };
+            @Override
+            public List<String> inStock() {
+                throw new RuntimeException("接口调用失败，请检查服务状态!");
+            }
+        };*/
     }
 }
