@@ -10,7 +10,7 @@ import java.util.List;
  * @author youfang
  * @version [1.0.0, 2020/8/26]
  **/
-@FeignClient("aquarius-product")
+@FeignClient(value = "aquarius-product", fallbackFactory = ProductClientFallback.class)
 public interface ProductClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/test/outStock")

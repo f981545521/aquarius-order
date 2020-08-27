@@ -57,13 +57,14 @@ public class OrderController {
     public Result<?> testOpenFeign(String key) {
         log.info("ORDER XID is: {}", RootContext.getXID());
         List<String> strings = productClient.outStock();
-        System.out.println(strings);
+        log.info("OPEN Feign调用结果{} 。", strings);
         Order order = new Order();
         order.setOrderName(new Random().nextInt(1000) + "A");
         orderMapper.insertSelective(order);
         if ("e".equals(key)){
             throw new RuntimeException();
         }
+        log.info("请求成功！");
         return Result.success();
     }
 }
